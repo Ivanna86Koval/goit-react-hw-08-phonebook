@@ -16,8 +16,6 @@ export const AddContactForm = () => {
   const handleSubmit = event => {
     event.preventDefault();
 
-    // const checkNewContact = contacts.some(contact => contact.name.toLowerCase().trim() === name.toLowerCase().trim()
-    // );
     const checkNewContact = contacts.some(contact => {
       return contact.name.trim() === name.trim();
     });
