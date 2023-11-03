@@ -1,5 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { getDefaultMiddleware } from '@reduxjs/toolkit';
 import { authReducer } from 'redux/auth/slice';
 import { contactsReducer } from 'redux/contacts/contactsSlice';
 import { filterReducer } from 'redux/filter/filterSlice';
@@ -16,16 +15,6 @@ import {
   REGISTER,
 } from 'redux-persist';
 
-// Застосування middleware за допомогою getDefaultMiddleware,  який містить стандартні middleware, а також встановлює ігнорування деяких дій для redux-persist.
-const middleware = [
-  ...getDefaultMiddleware({
-    serializableCheck: {
-      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-    },
-  }),
-];
-
-// Конфігурація для redux-persist, вказуємо ключ, зберігання та поля, які треба зберегти.
 const authPersistConfig = {
   key: 'auth',
   storage,
@@ -38,8 +27,23 @@ export const store = configureStore({
     filter: filterReducer,
     auth: persistReducer(authPersistConfig, authReducer),
   },
-  middleware,
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
   devTools: process.env.NODE_ENV === 'development',
 });
+
+// export const store = configureStore({
+//   reducer: rootReducer,
+//   middleware: getDefaultMiddleware =>
+//     getDefaultMiddleware({
+//       serializableCheck: {
+//         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+//       },
+//     }),
+// });
 
 export const persistor = persistStore(store);

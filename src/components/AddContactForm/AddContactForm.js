@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContacts } from 'redux/operation';
-import { selectContacts } from 'redux/selector';
+import { addContacts } from 'redux/contacts/operations';
+import { selectContacts } from 'redux/contacts/selectors';
 import { Form, Label, FormItem, FormBtn } from './AddContactForm.styled';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

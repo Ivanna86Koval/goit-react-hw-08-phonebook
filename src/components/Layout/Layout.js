@@ -6,13 +6,15 @@ import { Loader } from '../Loader/Loader';
 
 export const Layout = () => {
   return (
-    <Wrapper>
-      <AppBar />{' '}
-      {/*Виводимо компонент AppBar, який містить навігаційну панель */}
-      <Suspense fallback={<Loader />}>
-        <Outlet />
-        {/* Виводимо дочірній компонент Outlet, який буде містити відповідний компонент в залежності від поточного шляху */}
-      </Suspense>
-    </Wrapper>
+    <>
+      <Wrapper>
+        <AppBar />{' '}
+        {/*Виводимо компонент AppBar, який містить навігаційну панель */}
+        <Suspense fallback={<Loader />}>
+          {/* Виводимо дочірній компонент Outlet, який буде містити відповідний компонент в залежності від поточного шляху */}
+        </Suspense>
+      </Wrapper>
+      <Outlet />
+    </>
   );
 };

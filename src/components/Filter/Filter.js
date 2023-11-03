@@ -1,7 +1,7 @@
 import { FilterDiv, FilterLabel, FilterName } from './Filter.styled';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectFilter } from 'redux/selector';
-import {filterValue} from 'redux/filterSlice'
+import { selectFilter } from 'redux/filter/selectors';
+import { changeFilter } from 'redux/filter/filterSlice';
 
 export const Filter = () => {
   const value = useSelector(selectFilter);
@@ -10,17 +10,15 @@ export const Filter = () => {
   const onChange = event => {
     const normalizedValue = event.target.value.toLowerCase();
 
-    dispatch(filterValue(normalizedValue));
+    dispatch(changeFilter(normalizedValue));
   };
 
-return (
-      <FilterDiv>
-        <FilterLabel>Find contacts by name</FilterLabel>
-        <FilterName
-          type="text" value={value}
-          onChange={onChange}/>
+  return (
+    <FilterDiv>
+      <FilterLabel>Find contacts by name</FilterLabel>
+      <FilterName type="text" value={value} onChange={onChange} />
     </FilterDiv>
-  )
-}
+  );
+};
 
 export default Filter;

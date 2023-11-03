@@ -7,41 +7,34 @@ import { addContacts } from 'redux/contacts/operations';
 import { Form, Label, Input, Button } from './ContactForm.styled';
 import { ReactComponent as AddIcon } from 'icons/add.svg';
 
-//Генерація унікальних ідентифікаторів для полів форми.
 const nameInputId = nanoid();
 const numberInputId = nanoid();
 
-// Компонент ContactForm відповідає за форму додавання нового контакту
 export const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
 
-  // Обробка відправлення форми.
   const handleSubmit = event => {
     event.preventDefault();
 
-    // Перевіряємо, чи контакт з таким іменем вже існує в списку контактів
     const isInContacts = contacts.some(
       contact => contact.name.toLowerCase() === name.toLowerCase()
     );
 
-    // Перевіряє, чи існує контакт із таким самим ім'ям у списку контактів. Якщо контакт вже існує, виводиться попередження.
     if (isInContacts) {
       alert(`${name} вже в контактах☝️`);
 
       return;
     }
 
-    // Відправляємо дію для додавання нового контакту до Redux store
     dispatch(addContacts({ name, number }));
 
     setName('');
     setNumber('');
   };
 
-  // Обробка зміни значень полів форми.
   const handleChange = event => {
     const { name, value } = event.currentTarget;
     switch (name) {

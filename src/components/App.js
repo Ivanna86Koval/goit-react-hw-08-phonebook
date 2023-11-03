@@ -1,33 +1,59 @@
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { selectContacts } from 'redux/selector';
-import { fetchContacts } from 'redux/operation';
-import { Container, Title, SubTitle, Wrapper } from './App.styled';
-import { AddContactForm } from './AddContactForm/AddContactForm';
-import { Filter } from './Filter/Filter';
-import { ContactList } from './ContactList/ContactList';
+import { useEffect, lazy } from 'react';
+import { useDispatch } from 'react-redux';
+import { Route, Routes } from 'react-router-dom';
+import { Layout } from './Layout/Layout';
+import { PrivateRoute } from './PrivateRoute';
+import { RestrictedRoute } from './RestrictedRoute';
+import { refreshUser } from 'redux/auth/operations';
+import { useAuth } from '../hooks/useAuth';
+import { Wrapper } from './App.styled';
+
+const Home = lazy(() => import('pages/Home'));
+const Register = lazy(() => import('pages/Register'));
+const Login = lazy(() => import('pages/Login'));
+const Contacts = lazy(() => import('pages/Contacts'));
 
 export const App = () => {
-  const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
+  const { isRefreshing } = useAuth();
 
   useEffect(() => {
-    dispatch(fetchContacts());
+    dispatch(refreshUser());
   }, [dispatch]);
 
-  return (
-    <Container>
-      <Title>Phonebook</Title>
-      <AddContactForm />
-      <SubTitle>Contacts</SubTitle>
-      {contacts.length > 0 ? (
-        <Filter />
-      ) : (
-        <Wrapper>Your phonebook is empty. Add first contact!</Wrapper>
-      )}
-      {contacts.length > 0 && <ContactList />}
-    </Container>
+  return isRefreshing ? (
+    <p>Оновлення користувача...</p>
+  ) : (
+    <Wrapper>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          {/*Головна сторінка */}
+          <Route index element={<Home />} />
+          {/* Сторінка реєстрації користувача */}
+          <Route
+            path="/register"
+            element={
+              <RestrictedRoute redirectTo="/login" component={<Register />} />
+            }
+          />
+          {/* Сторінка входу користувача */}
+          <Route
+            path="/login"
+            element={
+              <RestrictedRoute redirectTo="/contacts" component={<Login />} />
+            }
+          />
+          {/* Сторінка контактів (доступна тільки для авторизованих користувачів) */}
+          <Route
+            path="/contacts"
+            element={
+              <PrivateRoute redirectTo="/login" component={<Contacts />} />
+            }
+          />
+        </Route>
+        {/* Маршрут за замовчуванням (якщо ні один інший маршрут не співпадає) */}
+        <Route path="*" element={<Home />} />
+      </Routes>
+    </Wrapper>
   );
 };
-
-export default App;
