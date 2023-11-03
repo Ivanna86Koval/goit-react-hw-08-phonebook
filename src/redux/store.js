@@ -16,7 +16,6 @@ import {
   REGISTER,
 } from 'redux-persist';
 
-// Застосування middleware за допомогою getDefaultMiddleware,  який містить стандартні middleware, а також встановлює ігнорування деяких дій для redux-persist.
 const middleware = [
   ...getDefaultMiddleware({
     serializableCheck: {
@@ -25,23 +24,20 @@ const middleware = [
   }),
 ];
 
-// Конфігурація для redux-persist, вказуємо ключ, зберігання та поля, які треба зберегти.
 const authPersistConfig = {
   key: 'auth',
   storage,
   whitelist: ['token'],
 };
 
-// Створення сховища Redux за допомогою configureStore
 export const store = configureStore({
   reducer: {
-    contacts: contactsReducer, // Редюсер для керування станом контактів
-    filter: filterReducer, // Редюсер для керування станом фільтра
+    contacts: contactsReducer,
+    filter: filterReducer,
     auth: persistReducer(authPersistConfig, authReducer),
   },
   middleware,
   devTools: process.env.NODE_ENV === 'development',
 });
 
-// Створюємо persistor для збереження стану Redux у локальному сховищі.
 export const persistor = persistStore(store);
