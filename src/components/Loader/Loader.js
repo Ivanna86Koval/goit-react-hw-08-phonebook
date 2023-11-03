@@ -8,7 +8,7 @@ export const Loader = () => (
     ariaLabel="comment-loading"
     wrapperStyle={{}}
     wrapperClass="comment-wrapper"
-    color="#f08080"
-    backgroundColor="#F4442E"
+    color="#fff"
+    backgroundColor="#f08080"
   />
 );
