@@ -5,5 +5,5 @@ import { useAuth } from 'hooks/useAuth';
 export const RestrictedRoute = ({ component: Component, redirectTo = '/' }) => {
   const { isLoggedIn } = useAuth();
 
-  return isLoggedIn ? <Navigate to={redirectTo} /> : Component; // Перенаправляємо на redirectTo, якщо користувач вже авторизований, інакше рендеримо компонент Component
+  return isLoggedIn ? <Navigate to={redirectTo} /> : <Component />;
 };
