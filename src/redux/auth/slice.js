@@ -1,16 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { register, logIn, logOut, refreshUser } from 'redux/auth/operations';
+const initialState = {
+  user: { name: null, email: null },
+  token: null,
+  isLoggedIn: false,
+  isRefreshing: false,
+  error: null,
+  isLoading: false,
+};
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState: {
-    user: { name: null, email: null },
-    token: null,
-    isLoggedIn: false,
-    isRefreshing: false,
-    error: null,
-    isLoading: false,
-  },
+  initialState,
   extraReducers: builder =>
     builder
       .addCase(register.fulfilled, (state, action) => {

@@ -1,7 +1,6 @@
 import { useAuth } from 'hooks/useAuth';
 import { Link } from './Navigation.styled';
 
-// Компонент Navigation відповідає за навігаційне меню
 export const Navigation = () => {
   const { isLoggedIn } = useAuth();
 
